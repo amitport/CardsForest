@@ -8,7 +8,8 @@ calculateCascade = (containerSize, itemSize, numOfItems, step, minimalStep) ->
     return -> 0
     
   #  everything fits in the container
-  if itemSize + numOfItems * step <= containerSize
+  #  or it doesn't - but we can't do anything about it
+  if itemSize + numOfItems * step <= containerSize or minimalStep == step
     return (i) -> step * i
   
   #I)  must fit in the container:

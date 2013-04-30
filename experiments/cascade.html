@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app='test'>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>Card Game</title>
+</head>
+<body ng-controller="test">
+<div id="body_padding">
+
+<input  type="number" min="{{iSize}}" max="1000" ng-model="cSize">
+cSize {{cSize}} [{{iSize}}..1000]<br>
+<input type="number" min="{{step}}" max="{{cSize}}" ng-model="iSize">
+iSize {{iSize}} [{{step}}..{{cSize}}]<br>
+<input type="number" min="{{minStep}}" max="{{iSize}}" ng-model="step">
+step {{step}} [{{minStep}}..{{iSize}}]<br>
+<input type="number" min="0" max="{{step}}" ng-model="minStep">
+minStep {{minStep}} [0..{{step}}]<br>
+
+	<div style="position: relative; height: {{cSize + iSize}}px; width: {{cSize + iSize}}px; margin: 0 auto">
+		<div style="position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{iSize}}px; width: {{cSize}}px;">
+		    <div cascade="right" ng-repeat="item in items" ></div>
+		</div>
+		<div style="top: {{iSize}}px;position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{cSize}}px; width: {{iSize}}px;">
+            <div cascade="top" ng-repeat="item in items"></div>
+        </div>
+        <div style="top: {{cSize}}px; left: {{iSize}}px; position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{iSize}}px; width: {{cSize}}px;">
+            <div cascade="left" ng-repeat="item in items"></div>
+        </div>
+        <div style="left: {{cSize}}px; position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{cSize}}px; width: {{iSize}}px;">
+            <div cascade="bottom" ng-repeat="item in items"></div>
+        </div>
+
+	</div>
+</div>
+
+ 
+ 
+
+ 
+<script src="angular/angular.js"></script>
+<script src="js/util/cascade.js"></script>
+<script>
+angular.module('test', [])
+  .controller('test', function ($scope) {
+    $scope.cSize = 124;
+    $scope.iSize = 70;
+    $scope.step = 6;
+    $scope.minStep = 6;
+    $scope.left = 0;
+    $scope.top = 0;
+    $scope.items = ['','','','','','','','','','']
+  })
+  .directive('cascade', function () {
+    return {
+      template: '<div style="box-sizing: border-box;-moz-box-sizing: border-box;border:3px solid black;position:absolute;background-color: yellow; {{offsetFrom}}: {{offsetVal}}; height: {{iSize}}px; width: {{iSize}}px;">',
+      link: function (scope, element, attr) {
+        scope.offsetFrom = attr.cascade;
+	    scope.$watch(
+		      function (scope){
+		        return calculateCascade(parseInt(scope.cSize),
+		                                parseInt(scope.iSize),
+		                                scope.items.length,
+		                                parseInt(scope.step),
+		                                parseInt(scope.minStep))(scope.$index)+'px';
+		      },
+		      function (newVal, oldVal, scope){
+		        scope.offsetVal = newVal;
+		      }
+	      );
+	    }
+    };
+  });
+</script>
+
+</body>
+</html>
