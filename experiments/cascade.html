@@ -19,7 +19,7 @@ step {{step}} [{{minStep}}..{{iSize}}]<br>
 <input type="number" min="0" max="{{step}}" ng-model="minStep">
 minStep {{minStep}} [0..{{step}}]<br>
 
-	<div style="position: relative; height: {{cSize + iSize}}px; width: {{cSize + iSize}}px; margin: 0 auto">
+	<div style="background-color:white; position: relative; height: {{cSize + iSize}}px; width: {{cSize + iSize}}px; margin: 0 auto">
 		<div style="position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{iSize}}px; width: {{cSize}}px;">
 		    <div cascade="right" ng-repeat="item in items" ></div>
 		</div>
@@ -45,9 +45,9 @@ minStep {{minStep}} [0..{{step}}]<br>
 <script>
 angular.module('test', [])
   .controller('test', function ($scope) {
-    $scope.cSize = 124;
+    $scope.cSize = 200;
     $scope.iSize = 70;
-    $scope.step = 6;
+    $scope.step = 20;
     $scope.minStep = 6;
     $scope.left = 0;
     $scope.top = 0;

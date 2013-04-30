@@ -72,7 +72,7 @@ exports = module.exports = function(grunt) {
         tasks: ['coffee']
       },
       livereload: {
-        files: ['static/**/*', 'generated/**/*'],
+        files: ['static/**/*', 'generated/**/*', 'experiments/**/*'],
         tasks: ['livereload']
       }
     }
