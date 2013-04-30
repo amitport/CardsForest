@@ -1,3 +1,4 @@
 node_modules
 external_components/bower
+.sass-cache
 generated
