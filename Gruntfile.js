@@ -10,7 +10,7 @@ exports = module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-regarde');
   
   grunt.initConfig({
-    //(source/sass -> generated/css)
+    //compile sources/compass -> generated/css
     compass: {
      generate: {
        options: {
@@ -19,60 +19,65 @@ exports = module.exports = function(grunt) {
                'http_stylesheets_path = "/css";' +
                
                'css_dir = "generated/css";' +
-               'sass_dir = "source/sass";' +
+               'sass_dir = "sources/compass";' +
                'images_dir = "static/images"'
          }
      }
    },
-   //compile all coffeescript files in dev/coffee directly to dev/js
+   //compile sources/coffee -> generated/js
    coffee: {
       compile: {
         options: {
-            bare: true //do not wrap coffeescript files in their own function scope (everything is global -> bad but easier to develop)
+            bare: true 
         },
         files: [{
-            expand: true,         // Enable dynamic expansion.
-            cwd: 'source/coffee/',   // Src matches are relative to this path.
-            src: ['**/*.coffee'], // Actual pattern(s) to match.
-            dest: 'generated/scripts/',      // Destination path prefix.
-            ext: '.js',           // Dest filepaths will have this extension.
+          expand: true,         // Enable dynamic expansion.
+          cwd: 'sources/coffee/',   // Src matches are relative to this path.
+          src: ['**/*.coffee'], // Actual pattern(s) to match.
+          dest: 'generated/js/',      // Destination path prefix.
+          ext: '.js',           // Dest filepaths will have this extension.
         }]
       }
     },
-    //run a small server
+    //run a development server
     connect: {
       server: {
         options: {
           port: 9000,
           hostname: '0.0.0.0', //change to 0.0.0.0 for LAN access
-          //append HTML with a script that enables live reload 
           middleware: function (connect, options) {
             return [
+              //append HTML with a script that enables live reload 
               lrSnippet,
-              connect.static('App'),
-              connect.static('generated')
-            ];
+              //mount static, generated and external_components to host home
+              connect.static('static'),
+              connect.static('generated'),
+              connect.static('experiments'),
+              connect.static('external_components/bower'),
+              connect.static('external_components/other')
+            ];               
           }
         }
       }
     },
     
-    //watch for change on our file system
+    //watch for changes in the file system
     regarde: {
       compass: {
-        files: ['source/sass/**/*'],
+        files: ['sources/compass/**/*'],
         tasks: ['compass']
       },
       coffee: {
-        files: ['source/coffee/**/*'],
+        files: ['sources/coffee/**/*'],
         tasks: ['coffee']
       },
       livereload: {
-        files: ['App/**/*','generated/**/*'],
+        files: ['static/**/*', 'generated/**/*'],
         tasks: ['livereload']
       }
     }
   });
   
+  grunt.registerTask('build', ['compass', 'coffee']);
   grunt.registerTask('default', ['compass', 'coffee', 'livereload-start', 'connect:server', 'regarde']);
 };

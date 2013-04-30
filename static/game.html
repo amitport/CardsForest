@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="game">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>Card Game</title>
+</head>
+<body ng-controller="game">
+<div id="body_padding">
+    <div class="section" 
+    ng-repeat="section in layout.sections" 
+    ng-style="section.style"
+    ng-class="section.modifiers"
+    >
+        <div class="cell" ng-repeat="cell in section.cells"
+            ng-style="section.cellStyle">
+            
+            <div class="card red" 
+            ng-repeat="card in cell.cards"
+            ng-style="section.cardStyle"
+            spread-cards>A♦</div>
+
+         </div>
+    </div>
+</div>
+ 
+ 
+
+ 
+<script src="angular/angular.js"></script>
+<script src="js/angular/modules/game.js"></script>
+<script src="js/angular/providers/layout.js"></script>
+<script src="js/angular/providers/viewport.js"></script>
+<script src="js/angular/controllers/game.js"></script>
+
+</body>
+</html>

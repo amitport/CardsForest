@@ -1,0 +1,1 @@
+gameModule = angular.module('game', [])

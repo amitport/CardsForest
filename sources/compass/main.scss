@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+@import "compass/css3";
+
+
+/* set document size to viewport size */
+html, body {
+	width: 100%; 
+	height: 100%; 
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: green;
+}
+
+#body_padding {
+    $body_padding: 0.5%; //better to use vmin, but it is not well supported
+    
+	position: relative;
+	top: $body_padding; left: $body_padding;
+    width: 100 - $body_padding*2; height: 100 - $body_padding*2; 
+    margin: 0;
+    padding: 0;
+}
+
+/* angular's ng-cloak */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none;
+}
+
+@import "flex";
+@import "component";

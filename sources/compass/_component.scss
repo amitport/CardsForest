@@ -1,0 +1,35 @@
+.component {
+    @include box-sizing(border-box);
+}
+
+.section {
+	@extend .component;
+	@extend .flex;
+	   
+    @include box-shadow(0 0 12px 1px rgba(0, 0, 0, 0.2));
+    
+    position: absolute;
+    background-color: #BBB;
+    padding: 3px;
+}
+
+.cell {
+	@extend .component;
+	@extend .flex-item;
+    @include box-shadow(inset -2px -2px 8px 0 rgba(0, 0, 0, 0.5));
+    
+	position: relative;
+    background-color: grey;
+}
+
+.card {
+    @include box-sizing(border-box);
+    position: absolute;
+    text-align: center;
+    background-color: white;
+    border: 1px solid black;
+    
+    &.red {
+        color: red;
+    }
+}
