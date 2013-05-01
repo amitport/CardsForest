@@ -7,7 +7,7 @@ class Rank
   toString: -> "<#{@name}>"
     
   # Rank static
-  @ranks = [
+  @values = [
     new Rank('Ace', 'A'),
     new Rank('Two', '2'),
     new Rank('Three', '3'),
@@ -17,7 +17,7 @@ class Rank
     new Rank('Seven', '7'),
     new Rank('Eight', '8'),
     new Rank('Nine', '9'),
-    new Rank('Ten', 'T'),
+    new Rank('Ten', '10'),
     new Rank('Jack', 'J'),
     new Rank('Queen', 'Q'),
     new Rank('King', 'K')

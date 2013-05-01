@@ -1,4 +1,4 @@
-class Format  
+class Standard52  
   constructor: (@rank, @suit) ->
     @color = @suit.color
     @symbol = "#{@rank.symbol}#{@suit.symbol}"
@@ -8,8 +8,8 @@ class Format
   toString: -> "<#{@name}>"
 
   # Format static
-  @formats = []
-  for s in Suit.suits
-    for r in Rank.ranks
-      @formats.push new @(r, s)
+  @values = []
+  for s in Suit.values
+    for r in Rank.values
+      @values.push new @(r, s)
 

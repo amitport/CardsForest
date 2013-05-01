@@ -8,7 +8,7 @@ class Suit
   toString: -> "<#{@name}>"
   
   # Suit static
-  @suits = [
+  @values = [
     new Suit('Clubs', '♣', 'black'),
     new Suit('Diamonds', '♦', 'red'),
     new Suit('Hearts', '♥', 'red'),

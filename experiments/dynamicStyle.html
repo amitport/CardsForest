@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app='test'>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<title>Card Game</title>
+</head>
+<body ng-controller="test">
+<div id="body_padding" style="background-color:white; overflow: auto;">
+<form>
+<table>
+<tr>
+    <th>cardScale</th><td><input type="range" min="30" max="100" ng-model="cardScale"><br></td>
+</tr>
+<tr>
+    <th>cardMargin</th><td><input type="range" min="0" max="30"ng-model="cardMargin"><br></td>
+</tr>
+</table>
+</form>
+    <div ng-repeat="card in deck" ng-style="cardStyle(card.color)">
+      {{card.symbol}}
+    </div>
+
+
+</div> 
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+
+<script src="js/model/rank.js"></script>
+<script src="js/model/suit.js"></script>
+<script src="js/model/standard52.js"></script>
+<script src="js/model/card.js"></script>
+<script src="js/model/deck.js"></script>
+<script>
+angular.module('test', [])
+
+  .controller('test', function ($scope) {
+    $scope.deck = DeckFactory.create();
+
+    $scope.cardScale = '40';
+    $scope.cardMargin = '4';
+    $scope.cardStyle =  function (color) {
+      return {
+        display: 'inline-block',
+        position: 'relative',
+        color: color,
+        margin:  $scope.cardMargin + 'px',
+        
+        'font-size': $scope.cardScale/2.5 + 'px',
+        width:  $scope.cardScale + 'px',
+        height:  $scope.cardScale + 'px',
+        'line-height': $scope.cardScale + 'px',
+        
+        'text-align': 'center',
+        border: '1px solid black'
+      };
+    };
+    
+  });
+</script>
+
+</body>
+</html>

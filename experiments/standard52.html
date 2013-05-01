@@ -64,7 +64,7 @@ tfoot th em {
 	    </thead>
 	    <tbody>
 	        <tr class="odd"><td ng-repeat="(k, v) in type.values[0]">{{k}}</td></tr>
-	        <tr  ng-repeat="value in type.values" ><td ng-repeat="(k, v) in value">{{v.toString()}}</td></tr>
+	        <tr  ng-repeat="value in type.values"><td ng-repeat="(k, v) in value">{{v.toString()}}</td></tr>
 	    </tbody>
 	</table>
 
@@ -72,17 +72,20 @@ tfoot th em {
 <script src="angular/angular.js"></script>
 <script src="js/model/rank.js"></script>
 <script src="js/model/suit.js"></script>
-<script src="js/model/Format.js"></script>
+<script src="js/model/standard52.js"></script>
+<script src="js/model/card.js"></script>
+<script src="js/model/deck.js"></script>
 <script>
 angular.module('test', [])
   .controller('test', function ($scope) {
     $scope.types = [
-      {name: 'Rank', values: Rank.ranks},
-      {name: 'Suit', values: Suit.suits},
-      {name: 'Format', values: Format.formats}
-    ]
+                   {name: 'Rank', values: Rank.values},
+                   {name: 'Suit', values: Suit.values},
+                   {name: 'Standard52 Format', values: Standard52.values},
+                   {name: 'Deck', values: DeckFactory.create()},
+                   {name: 'Shuffled Deck', values: DeckFactory.create().shuffle()}
+                   ];
   });
 </script>
-
 </body>
 </html>
