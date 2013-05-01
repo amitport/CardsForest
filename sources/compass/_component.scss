@@ -23,13 +23,38 @@
 }
 
 .card {
-    @include box-sizing(border-box);
-    position: absolute;
+	font-size: 10px;
+	
+    @include box-sizing(content-box);
+    @include border-radius(0.3em);
+    
+    display: inline-block;
+    position: relative;
+
+    margin: 0.25em;
+    width: 3em;
+    height:  3em;
+    line-height: 3em;
+    font-family: "Shojumaru", serif;
     text-align: center;
-    background-color: white;
-    border: 1px solid black;
+    border: medium solid black;
     
     &.red {
-        color: red;
+        @include text-shadow(00 0.1em 0.1em black,
+					        0 -0.1em 0.1em black,
+					        0.1em 0 0.1em black,
+					        -0.1em 0 0.1em black);
+        background-color: #BBB;
+        color: #FF7878;
+    }
+    
+    &.black {
+        @include text-shadow(00 0.1em 0.1em white,
+                        0 -0.1em 0.1em white,
+                        0.1em 0 0.1em white,
+                        -0.1em 0 0.1em white);
+        background-color: #EEE;
+        color: black;
+    
     }
 }
