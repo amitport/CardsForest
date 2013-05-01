@@ -14,4 +14,5 @@ class DeckFactory
         [@[i], @[j]] = [@[j], @[i]]
       @
     
+    filter: (predicate) -> element for element in @ when predicate(element)
     

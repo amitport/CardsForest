@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app='test' lang="en" style="background-color: black;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Shojumaru">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<title>Card Game</title>
+</head>
+<body ng-cloak get-h ng-controller="test" style="line-height: {{H()}}px; text-align:center; background-color:yellow; ">
+    viewport: {{W()}} X {{H()}}, zoom: {{zoom()}}
+    
+<script src="angular/angular.js"></script>
+<script src="detect-zoom/detect-zoom.js"></script>
+<script src="js/angular/providers/viewport.js"></script>
+
+
+<script>
+var mod = angular.module('test', []);
+initViewport(mod);
+mod.directive('getH', function() {
+  return function (scope, element, attr) {
+    scope.$watch('H', function() {
+      console.log('body.clientHeight: ' + element[0].clientHeight);
+      console.log('window.innerHeight: ' + window.innerHeight);
+      console.log('document.documentElement.clientHeight: ' + document.documentElement.clientHeight);
+      console.log('body.clientWidth: ' + element[0].clientWidth);
+      console.log('window.innerWidth: ' + window.innerWidth);
+      console.log('document.documentElement.clientWidth: ' + document.documentElement.clientWidth + '\n');
+    });
+  };
+});
+mod.controller('test', function ($scope, $window, viewport) {
+    $scope.zoom = detectZoom.zoom;
+    $scope.H = viewport.H;
+    $scope.W = viewport.W;
+  });
+</script>
+
+</body>
+</html>

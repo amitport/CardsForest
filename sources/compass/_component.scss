@@ -28,16 +28,21 @@
     @include box-sizing(content-box);
     @include border-radius(0.3em);
     
+    &.top {@include box-shadow(0 -0.3em 0.5em -0.2em rgba(0, 0, 0, 0.7));}
+    &.bottom {@include box-shadow(0 0.3em 0.5em -0.2em rgba(0, 0, 0, 0.7));}
+    &.right {@include box-shadow(0.3em 0 0.5em -0.2em rgba(0, 0, 0, 0.7));}
+    &.left {@include box-shadow(-0.3em 0 0.5em -0.2em rgba(0, 0, 0, 0.7));}
+    
     display: inline-block;
     position: relative;
 
-    margin: 0.25em;
+    margin: 0;
     width: 3em;
     height:  3em;
     line-height: 3em;
     font-family: "Shojumaru", serif;
     text-align: center;
-    border: medium solid black;
+    border: thin solid black;
     
     &.red {
         @include text-shadow(00 0.1em 0.1em black,

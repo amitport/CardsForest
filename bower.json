@@ -3,5 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "angular": "~1.0.6"
+  },
+  "devDependencies": {
+    "detect-zoom": "https://github.com/tombigel/detect-zoom.git#~1.0.4"
   }
 }

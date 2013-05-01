@@ -1,18 +1,16 @@
 @CHARSET "UTF-8";
 
 @import "compass/css3";
-
+@import "compass/css3/user-interface";
 
 /* set document size to viewport size */
-html, body {
+body, html {
+	@include user-select(none);
+	
 	width: 100%; 
 	height: 100%; 
 	margin: 0;
 	padding: 0;
-}
-
-body {
-	background-color: green;
 }
 
 #body_padding {
