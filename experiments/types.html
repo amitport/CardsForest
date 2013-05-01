@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app='test'>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<style>
+table {
+    width:90%;
+    border:2px solid grey;
+    margin:1em auto;
+        border-collapse:collapse;
+    } 
+tr.odd td   {
+    background:#0F0F3f;
+    color: white;
+    }
+td {
+    color:#678197;
+    border:2px solid grey;
+    padding:.3em 1em;
+    text-align:center;
+    }               
+th {
+    font-weight:normal;
+    color: #678197;
+    text-align:left;
+    border:2px solid grey;
+    padding:.3em 1em;
+    }                           
+thead th {
+    background:#f4f9fe;
+    text-align:center;
+    font:bold 1.2em/2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
+    color:#66a3d3
+    }   
+tfoot th {
+    text-align:center;
+    background:#f4f9fe;
+    }   
+tfoot th strong {
+    font:bold 1.2em "Century Gothic","Trebuchet MS",Arial,Helvetica,sans-serif;
+    margin:.5em .5em .5em 0;
+    color:#66a3d3;
+        }       
+tfoot th em {
+    color:#f03b58;
+    font-weight: bold;
+    font-size: 1.1em;
+    font-style: normal;
+    }   
+</style>
+
+
+<title>Card Game</title>
+</head>
+<body ng-controller="test">
+<div id="body_padding" style="background-color:white; overflow: auto;">
+
+	<table ng-repeat="type in types">
+	    <thead>
+	        <tr><th colspan="100">{{type.name}}</th></tr>
+	    </thead>
+	    <tbody>
+	        <tr class="odd"><td ng-repeat="(k, v) in type.values[0]">{{k}}</td></tr>
+	        <tr  ng-repeat="value in type.values" ><td ng-repeat="(k, v) in value">{{v.toString()}}</td></tr>
+	    </tbody>
+	</table>
+
+</div> 
+<script src="angular/angular.js"></script>
+<script src="js/model/rank.js"></script>
+<script src="js/model/suit.js"></script>
+<script src="js/model/Format.js"></script>
+<script>
+angular.module('test', [])
+  .controller('test', function ($scope) {
+    $scope.types = [
+      {name: 'Rank', values: Rank.ranks},
+      {name: 'Suit', values: Suit.suits},
+      {name: 'Format', values: Format.formats}
+    ]
+  });
+</script>
+
+</body>
+</html>
