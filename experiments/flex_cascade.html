@@ -18,6 +18,11 @@
 </tr>
 
 <tr>
+    <th>container size</th><td><input type="number" min="100" max="1000" ng-model="cSize"> {{cSize}}, [100..1000]</td>
+</tr>
+
+
+<tr>
     <th>step size</th><td><input type="number" min="{{minStep}}" max="{{iSize}}" ng-model="step"> {{step}} [{{minStep}}..{{iSize}}]</td>
 </tr>
 
@@ -43,26 +48,27 @@
 <tr>
     <th>stretched</th><td><input type="checkbox" ng-model="stretched" ng-checked="checked"
                                                                 ng-true-value="stretched"
-                                                                ng-false-value="center">{{stretched}}</td>
+                                                                ng-false-value="center"></td>
 </tr>
 </table>
 </form>
-    <div class="flex {{spaced}} {{vertical2}} {{stretched}}" style="width: 500px; height: 500px; background-color:white;">
+    <div class="flex {{spaced}} {{vertical2}} {{stretched}}" ng-style="{padding: 0, width: (cSize + 2 * padding) + 'px', height: (cSize  + 2 * padding) + 'px', 'background-color': 'white'}">
 	  
 	   <div ng-repeat="cell in cells" class="cell" 
 	       ng-style="{
                position: 'relative',
-               border: '1px solid black',
-               margin: '5px',
-               'min-height':  iSize + 2 + 2 * padding + 'px',
-               'min-width': iSize + 2 + 2 * padding + 'px',
+              
+               margin: '10px',
+               'min-height':  iSize + 2 * padding + 'px',
+               'min-width': iSize + 2 * padding + 'px',
                overflow: 'hidden'
           }">
-           <div
+           <div 
             cascade="offsetFrom"
-            class="card {{$parent.$parent.deck[0].color}} {{offsetFrom}}"
+            ng-repeat="card in deck"
+            class="card {{$parent.card.color}} {{offsetFrom}}"
             ng-style="getStyle()">
-            {{$parent.$parent.deck[0].symbol}}
+            {{$parent.card.symbol}}
            </div>
     </div>
     </div>
@@ -86,19 +92,20 @@
 angular.module('test', [])
   .controller('test', function ($scope) {
     $scope.checked = true;
+    $scope.cSize = 439;
     $scope.stretched = "stretched";
     $scope.spaced = "spaced";
     $scope.vertical2 = "vertical";
     $scope.iSize = 10;
-    $scope.offsetFrom = 'top';
+    $scope.offsetFrom = 'left';
     $scope.vertical = function (){
       return $scope.offsetFrom == 'left' || $scope.offsetFrom =='right';
     }
-    $scope.deck = DeckFactory.create().filter(function(card){return (card.suit === Suit.HEARTS);});
+    $scope.deck = DeckFactory.create().filter(function(card){return (card.suit === Suit.SPADES);});
     $scope.cardScale = 25;
-    $scope.step = 55;
-    $scope.minStep = 4;
-    $scope.padding = 3;
+    $scope.step = 60;
+    $scope.minStep = 6;
+    $scope.padding = 6;
     $scope.cells = ['','','',''];
     $scope.additionalPad = {
                            top: 'left',
@@ -129,11 +136,10 @@ angular.module('test', [])
           };
           res[scope.offsetFrom] = scope.offsetVal;
           res[scope.$parent.$parent.additionalPad[scope.offsetFrom]] = scope.$parent.$parent.padding + 'px';
-          
           return res;
         };
         scope.watched = {
-                     cSize:      100,
+                     cSize:      scope.$parent.$parent.cSize,
                      padding:    parseInt(scope.$parent.$parent.padding),
                      iSize:      parseInt(scope.$parent.$parent.iSize),
                      numOfItems: scope.$parent.$parent.deck.length,
@@ -143,19 +149,18 @@ angular.module('test', [])
         };
         scope.$watch(
             function (scope){
-              scope.watched.cSize =      100,
+              scope.watched.cSize =      scope.$parent.$parent.cSize,
               scope.watched.padding =    parseInt(scope.$parent.$parent.padding),
               scope.watched.iSize =      parseInt(scope.$parent.$parent.iSize),
               scope.watched.numOfItems = scope.$parent.$parent.deck.length,
               scope.watched.step =       parseInt(scope.$parent.$parent.step),
               scope.watched.minStep =    parseInt(scope.$parent.$parent.minStep),
-              scope.watched.index =      0
+              scope.watched.index =      scope.$parent.$index
               return scope.watched;
             },
             function (newVal, oldVal, scope){              
-              console.log('new! ' + newVal);
               scope.offsetVal = (
-                  calculateCascade(100 - newVal.padding * 2,
+                  calculateCascade(newVal.cSize - /* cell margin */20,
                                    newVal.iSize,
                                    newVal.numOfItems,
                                    newVal.step,

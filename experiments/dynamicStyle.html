@@ -18,7 +18,7 @@
 </tr>
 
 <tr>
-    <th>cardMargin</th><td><input type="number" min="-50" max="30" ng-model="cardMargin">  from -50 to 30<br></td>
+    <th>cardMargin</th><td><input type="number" min="-50" max="30" ng-model="cardMargin"> from -50 to 30<br></td>
 </tr>
 
 </table>
@@ -29,7 +29,7 @@
 
 
 </div> 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+<script src="angular/angular.js"></script>
 
 <script src="js/model/rank.js"></script>
 <script src="js/model/suit.js"></script>
@@ -42,8 +42,8 @@ angular.module('test', [])
   .controller('test', function ($scope) {
     $scope.deck = DeckFactory.create();
 
-    $scope.cardScale = '10';
-    $scope.cardMargin = '20';
+    $scope.cardScale = 10;
+    $scope.cardMargin = 20;
     
     $scope.cardStyle =  function () {
       return {
