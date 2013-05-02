@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html ng-app='test'>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Shojumaru">
+
+<title>Card Game</title>
+</head>
+<body ng-controller="test">
+<div id="body_padding" style="background-color:lightgrey;">
+<form>
+<table>
+<tr>
+    <th>card scale</th><td><input type="number" min="6" max="{{cSize/7}}" ng-model="cardScale"> {{cardScale}} (item Size={{iSize}}), [6..{{cSize/7}}]</td>
+</tr>
+
+<tr>
+    <th>container size</th><td><input type="number" min="{{iSize}}" max="1000" ng-model="cSize">  {{cSize}} [{{iSize}}..1000]</td>
+</tr>
+
+<tr>
+    <th>step size</th><td><input type="number" min="{{minStep}}" max="{{iSize}}" ng-model="step"> {{step}} [{{minStep}}..{{iSize}}]</td>
+</tr>
+
+<tr>
+    <th>collapsed size</th><td><input type="number" min="0" max="{{step}}" ng-model="minStep"> {{minStep}} [0..{{step}}]</td>
+</tr>
+<tr>
+    <th>offset from</th><td> <select ng-model="offsetFrom" ng-options="c for c in ['top','left','right','bottom']"></select></td>
+</tr>
+<tr>
+    <th>padding</th><td><input type="number" min="0" max="50" ng-model="padding">{{padding}}</td>
+</tr>
+</table>
+</form>
+    <div>
+	<div class="cell" ng-style="{
+	           position:'absolute',
+	           border: '1px solid black',
+	           height: cSize +'px',
+	           width: (iSize + 2 + 2 * padding) + 'px',
+	           overflow: 'hidden'
+          }">
+           <div 
+            cascade="offsetFrom"
+            ng-repeat="card in deck"
+            class="card {{$parent.card.color}} {{offsetFrom}}"
+            ng-style="getStyle()">
+            {{$parent.card.symbol}}
+           </div>
+    </div>
+   <div
+            class="cell" ng-style="{
+               position:'absolute',
+               left: '120px',
+               border: '1px solid black',
+               height: (iSize + 2 + 2 * padding) +'px',
+               width: cSize + 'px',
+               overflow: 'hidden'
+          }">
+           <div 
+            cascade="offsetFrom"
+            ng-repeat="card in deck"
+            class="card {{$parent.card.color}} {{offsetFrom}}"
+            ng-style="getStyle()">
+            {{$parent.card.symbol}}
+           </div>
+    </div>
+    </div>
+         <div ref-card class="card"
+            style="position: absolute; left: 10000px;">
+            AA
+           </div>  
+</div>
+
+ 
+<script src="angular/angular.js"></script>
+<script src="js/util/cascade.js"></script>
+
+<script src="js/model/rank.js"></script>
+<script src="js/model/suit.js"></script>
+<script src="js/model/standard52.js"></script>
+<script src="js/model/card.js"></script>
+<script src="js/model/deck.js"></script>
+
+<script>
+angular.module('test', [])
+  .controller('test', function ($scope) {
+    $scope.iSize = 10;
+    $scope.offsetFrom = 'top';
+    $scope.deck = DeckFactory.create().filter(function(card){return (card.suit === Suit.HEARTS);});
+    $scope.cardScale = '25';
+    $scope.cSize = 400;
+    $scope.step = 55;
+    $scope.minStep = 4;
+    $scope.padding = 3;
+  })
+  .directive('refCard', function () {
+    return {
+      link: function (scope, element, attr) {
+        scope.$watch('cardScale', function (newVal){
+          element.css('font-size', scope.cardScale + 'px');
+          scope.iSize = element[0].offsetHeight;
+        });
+      }
+    }})
+  .directive('cascade', function () {
+    return {
+      scope: {
+        offsetFrom: '=cascade'
+      },
+      link: function (scope, element, attr) { 
+        scope.additionalPad = {
+          top: 'left',
+          left: 'top',
+          bottom: 'left',
+          right: 'top'
+        };
+        scope.getStyle = function () {
+          var res = {
+			'font-size': scope.$parent.cardScale+'px',
+			position: 'absolute'
+          };
+          res[scope.offsetFrom] = scope.offsetVal;
+          res[scope.additionalPad[scope.offsetFrom]] = scope.$parent.$parent.padding + 'px';
+          return res;
+        }
+        scope.watched = {
+                     cSize:      parseInt(scope.$parent.$parent.cSize),
+                     padding:    parseInt(scope.$parent.$parent.padding),
+                     iSize:      parseInt(scope.$parent.$parent.iSize),
+                     numOfItems: scope.$parent.$parent.deck.length,
+                     step:       parseInt(scope.$parent.$parent.step),
+                     minStep:    parseInt(scope.$parent.$parent.minStep),
+                     index:      scope.$parent.$index
+        };
+        scope.$watch(
+            function (scope){
+              scope.watched.cSize =      parseInt(scope.$parent.$parent.cSize),
+              scope.watched.padding =    parseInt(scope.$parent.$parent.padding),
+              scope.watched.iSize =      parseInt(scope.$parent.$parent.iSize),
+              scope.watched.numOfItems = scope.$parent.$parent.deck.length,
+              scope.watched.step =       parseInt(scope.$parent.$parent.step),
+              scope.watched.minStep =    parseInt(scope.$parent.$parent.minStep),
+              scope.watched.index =      scope.$parent.$index
+              return scope.watched;
+            },
+            function (newVal, oldVal, scope){              
+              console.log('new! ' + newVal);
+              scope.offsetVal = (
+                  calculateCascade(newVal.cSize - newVal.padding * 2,
+                                   newVal.iSize,
+                                   newVal.numOfItems,
+                                   newVal.step,
+                                   newVal.minStep)(newVal.index)
+                  + parseInt(newVal.padding)) +'px';
+            },
+            true
+        );
+    }
+  }});
+</script>
+
+</body>
+</html>

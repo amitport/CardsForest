@@ -14,14 +14,16 @@
 <form>
 <table>
 <tr>
-    <th>cardScale</th><td><input type="range" min="6" max="100" ng-model="cardScale"><br></td>
+    <th>cardScale</th><td><input type="number" min="6" max="100" ng-model="cardScale"> from 6 to 100<br></td>
 </tr>
+
 <tr>
-    <th>cardMargin</th><td><input type="range" min="-50" max="30"ng-model="cardMargin"><br></td>
+    <th>cardMargin</th><td><input type="number" min="-50" max="30" ng-model="cardMargin">  from -50 to 30<br></td>
 </tr>
+
 </table>
 </form>
-    <div ng-cloak ng-repeat="card in deck" class="card {{card.color}}" style="margin: {{cardMargin/100}}em; font-size: {{cardScale}}px;">
+    <div ng-cloak ng-repeat="card in deck" class="card {{card.color}}" ng-style="{margin: cardMargin/100 + 'em', 'font-size': cardScale +'px'}">
         {{card.symbol}}
     </div>
 

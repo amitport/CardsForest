@@ -19,17 +19,20 @@ step {{step}} [{{minStep}}..{{iSize}}]<br>
 <input type="number" min="0" max="{{step}}" ng-model="minStep">
 minStep {{minStep}} [0..{{step}}]<br>
 
-	<div style="background-color:white; position: relative; height: {{cSize + iSize}}px; width: {{cSize + iSize}}px; margin: 0 auto">
-		<div style="position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{iSize}}px; width: {{cSize}}px;">
+	<div ng-style="{'background-color':'white', position: 'relative', height: cSize + iSize + 'px', width: cSize + iSize + 'px', margin: '0 auto'}">
+		<div ng-style="{position: 'absolute', 'box-sizing': 'border-box','-moz-box-sizing': 'border-box', height: iSize + 'px', width: cSize + 'px'}">
 		    <div cascade="right" ng-repeat="item in items" ></div>
 		</div>
-		<div style="top: {{iSize}}px;position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{cSize}}px; width: {{iSize}}px;">
+		              
+		<div ng-style="{top: iSize+'px', position: 'absolute', 'box-sizing': 'border-box','-moz-box-sizing': 'border-box', height: cSize + 'px', width: iSize + 'px'}">
             <div cascade="top" ng-repeat="item in items"></div>
         </div>
-        <div style="top: {{cSize}}px; left: {{iSize}}px; position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{iSize}}px; width: {{cSize}}px;">
+        
+        <div ng-style="{top: cSize+'px',left: iSize+'px', position: 'absolute', 'box-sizing': 'border-box','-moz-box-sizing': 'border-box', height: iSize + 'px', width: cSize + 'px'}">
             <div cascade="left" ng-repeat="item in items"></div>
         </div>
-        <div style="left: {{cSize}}px; position:absolute; box-sizing: border-box;-moz-box-sizing: border-box; height: {{cSize}}px; width: {{iSize}}px;">
+        
+        <div ng-style="{left: cSize+'px', position: 'absolute', 'box-sizing': 'border-box','-moz-box-sizing': 'border-box', height: cSize + 'px', width: iSize + 'px'}">
             <div cascade="bottom" ng-repeat="item in items"></div>
         </div>
 
@@ -55,8 +58,22 @@ angular.module('test', [])
   })
   .directive('cascade', function () {
     return {
-      template: '<div style="box-sizing: border-box;-moz-box-sizing: border-box;border:3px solid black;position:absolute;background-color: yellow; {{offsetFrom}}: {{offsetVal}}; height: {{iSize}}px; width: {{iSize}}px;">',
+      template: '<div ng-style="style()">',
       link: function (scope, element, attr) {
+        scope.style  = function () {
+          var res =  {
+	         'box-sizing': 'border-box',
+	         '-moz-box-sizing': 'border-box',
+	         border: '3px solid black',
+	         position: 'absolute',
+	         'background-color': 'yellow',
+	         height: scope.iSize + 'px',
+	         width: scope.iSize + 'px'
+	       }
+          res[scope.offsetFrom] = scope.offsetVal;
+          return res;
+        };
+          
         scope.offsetFrom = attr.cascade;
 	    scope.$watch(
 		      function (scope){

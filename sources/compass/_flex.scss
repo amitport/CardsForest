@@ -30,9 +30,10 @@
    }
 
    /* default alignment: center */
-   -webkit-box-align: center; -moz-box-align: center; -webkit-align-items: center; -ms-flex-align: center;
-   align-items: center;
-   
+   &.center {
+	   -webkit-box-align: center; -moz-box-align: center; -webkit-align-items: center; -ms-flex-align: center;
+	   align-items: center;
+   }
    /* stretched alignment override */
    &.stretched {
         -webkit-box-align: stretch; -moz-box-align: stretch; -webkit-align-items: stretch; -ms-flex-align: stretch;
