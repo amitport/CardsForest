@@ -4,7 +4,7 @@ var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 exports = module.exports = function(grunt) {
   
   grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-iced-coffee');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-livereload');
   grunt.loadNpmTasks('grunt-regarde');
@@ -24,11 +24,17 @@ exports = module.exports = function(grunt) {
          }
      }
    },
+   
+   //TODO add string replacement for blocking functions:
+   //  from: /@waitFor(\w*)/g
+   //  to: 'await @waitFor$1 defer(),' 
+   
    //compile sources/coffee -> generated/js
    coffee: {
       compile: {
         options: {
-            bare: true 
+            bare: true,
+            runtime: "inline"
         },
         files: [{
           expand: true,         // Enable dynamic expansion.
