@@ -4,9 +4,6 @@ var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 exports = module.exports = function(grunt) {
 
   // Load grunt-contrib-sass plugin (compatible with grunt@0.4.5) and compass-mixins support.
-  // Make sure to install these dependencies:
-  //   npm install grunt-contrib-sass --save-dev
-  //   npm install compass-mixins --save-dev
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-iced-coffee');
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -17,12 +14,6 @@ exports = module.exports = function(grunt) {
     // Compile sources/compass -> generated/css using grunt-contrib-sass with Compass enabled.
     sass: {
       compass: {
-        options: {
-          style: 'expanded',
-          compass: true,
-          // Load Compass mixins from node_modules.
-          loadPath: ['node_modules/compass-mixins/lib']
-        },
         files: [{
           expand: true,
           cwd: 'sources/compass',
@@ -32,6 +23,10 @@ exports = module.exports = function(grunt) {
         }]
       }
     },
+
+    //TODO add string replacement for blocking functions:
+    //  from: /@waitFor(\w*)/g
+    //  to: 'await @waitFor$1 defer(),' 
 
     // Compile sources/coffee -> generated/js.
     coffee: {
